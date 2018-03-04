@@ -15,7 +15,9 @@ $(document).ready(function () {
         let ripemd160 = new Hashes.RMD160();
         let privateKey = keyPair.getPrivate().toString('hex');
         let publicPoint = keyPair.getPublic();
-        let publicKey = publicPoint.encode('hex');
+        let pointX = publicPoint.getX().toString('hex');
+        let pointY = publicPoint.getY().isOdd() ? '1' : '0';
+        let publicKey = pointX + pointY;
         let address = ripemd160.hex(publicKey);
 
         return {
