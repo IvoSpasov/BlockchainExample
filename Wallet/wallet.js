@@ -5,13 +5,30 @@ $(document).ready(function () {
         let keyPair = ec.genKeyPair();
         let privateKey = keyPair.getPrivate().toString('hex');
         let publicPoint = keyPair.getPublic();
-        let publicKey = publicPoint.encode('hex'); 
+        let publicKey = publicPoint.encode('hex');
         let address = ripemd160.hex(publicKey);
-        
-        console.log(privateKey);
-        console.log(publicKey);
-        console.log(address);
+
+        return {
+            privateKey: privateKey,
+            publicKey: publicKey,
+            address: address
+        }
     }
 
-    GenerateRandomWallet();
+    function saveWalletToLocalStorage(wallet) {
+        localStorage.wallet = JSON.stringify(wallet);
+    }
+
+    function getWalletFromLocalStorage() {
+        return JSON.parse(localStorage.wallet);
+    }
+
+    $('#new-wallet').click(() => {
+        let wallet = GenerateRandomWallet();
+        saveWalletToLocalStorage(wallet);
+        $('#private-key').append(wallet.privateKey);
+        $('#public-key').append(wallet.publicKey);
+        $('#address').append(wallet.address);
+    });
+
 });
