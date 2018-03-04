@@ -11,6 +11,7 @@
 </head>
 <body>
     <div>
+        <h1>Create a new wallet</h1>
         <input type="button" id="new-wallet" value="Create new wallet" />
         <p>Generated random wallet</p>
         <p>Private key: <b id="private-key"></b></p>
@@ -18,12 +19,26 @@
         <p>Address <b id="address"></b></p>
     </div>
     <div>
+        <h1>Open an existing wallet</h1>
         <input type="text" id="private-key-input">
         <input type="button" id="open-wallet" value="Open wallet" />
         <p>Opened an existing wallet</p>
         <p>Private key: <b id="private-key2"></b></p>
         <p>Public key: <b id="public-key2"></b></p>
         <p>Address <b id="address2"></b></p>
+    </div>
+    <div>
+        <h1>Send transaction</h1>
+        <label>Sender:</label>
+        <textarea type="text" id="sender" disabled rows=1 cols=50></textarea>
+        <br>
+        <label>Recipient:</label>
+        <input type="text" id="recipient" />
+        <br>
+        <label>Value:</label>
+        <input type="number" id="value" />
+        <br>
+        <input type="button" id="sign-transaction" value="Sign Transaction" />
     </div>
 </body>
 

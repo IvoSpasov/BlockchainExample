@@ -7,7 +7,7 @@ $(document).ready(function () {
     }
 
     function openExistingWallet(privateKey) {
-        let keyPair = ec.keyFromPrivate(privateKey);
+        let keyPair = ec.keyFromPrivate(privateKey, 'hex');
         return getWalletFromKeyPair(keyPair);
     }
 
@@ -35,6 +35,30 @@ $(document).ready(function () {
         return JSON.parse(localStorage.wallet);
     }
 
+    function createTransactionJson(to, value) {
+        let wallet = getWalletFromLocalStorage();
+
+        return {
+            from: wallet.address,
+            to: to,
+            senderPubKey: wallet.publicKey,
+            value: value,
+            fee: 10,
+            dateCreated: new Date().toISOString()
+        }
+    }
+
+    function signTransaction(transaction) {
+        let transactionString = JSON.stringify(transaction);
+        let sha256 = new Hashes.SHA256();
+        let transactionHash = sha256.hex(transactionString).split('');
+        let wallet = getWalletFromLocalStorage();
+        let keyPair = ec.keyFromPrivate(wallet.privateKey, 'hex');
+        let signature = keyPair.sign(transactionHash);
+        let signArr = [signature.r.toString('hex'), signature.s.toString('hex')];
+        return signArr;
+    }
+
     $('#new-wallet').click(() => {
         let wallet = generateRandomWallet();
         saveWalletToLocalStorage(wallet);
@@ -57,5 +81,15 @@ $(document).ready(function () {
         $('#private-key2').append(wallet.privateKey);
         $('#public-key2').append(wallet.publicKey);
         $('#address2').append(wallet.address);
+    });
+
+    $('#sender').val(getWalletFromLocalStorage().address);
+
+    $('#sign-transaction').click(() => {
+        let to = $('#recipient').val();
+        let value = $('#value').val();
+        let transaction = createTransactionJson(to, value);
+        let signature = signTransaction(transaction);
+        transaction.senderSignature = signature;
     });
 });
