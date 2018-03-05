@@ -19,6 +19,6 @@ namespace Node.ViewModels
 
         public DateTime DateCreated { get; set; }
 
-        public string SenderSignature { get; set; }
+        public string[] SenderSignature { get; set; }
     }
 }

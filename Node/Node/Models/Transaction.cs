@@ -19,7 +19,7 @@ namespace Node.Models
 
         public DateTime DateCreated { get; set; }
 
-        public string SenderSignature { get; set; }
+        public string[] SenderSignature { get; set; }
 
         public string TransactionHash { get; set; }
 

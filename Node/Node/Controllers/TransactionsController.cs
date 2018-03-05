@@ -12,10 +12,10 @@ namespace Node.Controllers
     [Route("api/Transactions")]
     public class TransactionsController : Controller
     {
-        [HttpPost]
-        public void Send(TransactionVM transactionVM)
+        [HttpPost("send")]
+        public string Send([FromBody]TransactionVM transactionVM)
         {
-
+            return "sucessfully added a transaction";
         }
     }
 }

@@ -91,5 +91,25 @@ $(document).ready(function () {
         let transaction = createTransactionJson(to, value);
         let signature = signTransaction(transaction);
         transaction.senderSignature = signature;
+        $('#signed-transaction').text(JSON.stringify(transaction));
+    });
+
+    $('#send-transaction').click(() => {
+        let transaction = $('#signed-transaction').text();
+        $.ajax({
+            url: 'http://localhost:57778/api/transactions/send',
+            method: 'POST',
+            data: transaction,
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (result, status, xhr) {
+                console.log(result);
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+            }
+        });
     });
 });
