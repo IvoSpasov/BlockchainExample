@@ -21,6 +21,9 @@
         {
             try
             {
+                if (!ModelState.IsValid)
+                    throw new Exception("Invalid input");
+
                 transactionService.Process(transactionVM);
             }
             catch (Exception ex)

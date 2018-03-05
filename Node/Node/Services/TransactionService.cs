@@ -1,6 +1,8 @@
 ﻿namespace Node.Services
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Node.Interfaces;
     using Node.Models;
     using Node.Utilities;
@@ -17,20 +19,23 @@
 
         public void Process(TransactionVM tranVM)
         {
-            var transaction = Create(tranVM);
-            transaction.TransactionHash = Crypto.Sha256(transaction.ToString());
-            // validate
-            // add to valid transactions
+            var newTransaction = Create(tranVM);
+            newTransaction.Hash = Crypto.Sha256(newTransaction.AsJsonString(true));
+            this.Validate(newTransaction);
+            this.validPendingTransactions.Add(newTransaction);
         }
 
-        private void Validate()
+        private void Validate(Transaction currentTransaction)
         {
-            //Checks for collisions -> duplicated transactions are skipped
-            //Checks for missing / invalid fields
-            //Validates the transaction signature
-            //Checks for correct balances?
-            //Puts the transaction in the "pending transactions" pool
+            //Check for collisions -> duplicated transactions are skipped
+            if (validPendingTransactions.Any(t => t.Hash == currentTransaction.Hash))
+            {
+                throw new Exception("Transaction already added");
+            }
 
+            //Check for missing / invalid fields
+            //Validate the transaction signature
+            //Check for correct balances?
         }
 
         private Transaction Create(TransactionVM tranVM)
