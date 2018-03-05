@@ -24,6 +24,11 @@ namespace Node
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddCors(options => options.AddPolicy("AllowCors", builder =>
+                builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+            ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,6 +39,7 @@ namespace Node
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("AllowCors");
             app.UseMvc();
         }
     }
