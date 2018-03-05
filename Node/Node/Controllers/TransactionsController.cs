@@ -1,21 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Node.ViewModels;
-
-namespace Node.Controllers
+﻿namespace Node.Controllers
 {
+    using System;
+    using Microsoft.AspNetCore.Mvc;
+    using Node.Interfaces;
+    using Node.ViewModels;
+
     [Produces("application/json")]
     [Route("api/Transactions")]
     public class TransactionsController : Controller
     {
+        private ITransactionService transactionService;
+
+        public TransactionsController(ITransactionService transactionService)
+        {
+            this.transactionService = transactionService;
+        }
+
         [HttpPost("send")]
         public string Send([FromBody]TransactionVM transactionVM)
         {
-            return "sucessfully added a transaction";
+            try
+            {
+                transactionService.Process(transactionVM);
+            }
+            catch (Exception ex)
+            {
+                return $"Unable to add transaction to node: {ex}";
+            }
+
+            return "Transaction sucessfully added to node.";
         }
     }
 }

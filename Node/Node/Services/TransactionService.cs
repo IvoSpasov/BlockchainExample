@@ -1,13 +1,12 @@
-﻿using Node.Models;
-using Node.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Node.Services
+﻿namespace Node.Services
 {
-    public class TransactionService
+    using System.Collections.Generic;
+    using Node.Interfaces;
+    using Node.Models;
+    using Node.Utilities;
+    using Node.ViewModels;
+
+    public class TransactionService : ITransactionService
     {
         private List<Transaction> validPendingTransactions;
 
@@ -15,8 +14,16 @@ namespace Node.Services
         {
             this.validPendingTransactions = new List<Transaction>();
         }
-        
-        public void Validate()
+
+        public void Process(TransactionVM tranVM)
+        {
+            var transaction = Create(tranVM);
+            transaction.TransactionHash = Crypto.Sha256(transaction.ToString());
+            // validate
+            // add to valid transactions
+        }
+
+        private void Validate()
         {
             //Checks for collisions -> duplicated transactions are skipped
             //Checks for missing / invalid fields
@@ -24,13 +31,6 @@ namespace Node.Services
             //Checks for correct balances?
             //Puts the transaction in the "pending transactions" pool
 
-        }
-        public void Add()
-        {
-            // create
-            // sing (sining should be done by the wallet)
-            // validate
-            // add to valid transactions
         }
 
         private Transaction Create(TransactionVM tranVM)
@@ -47,11 +47,6 @@ namespace Node.Services
             };
 
             return newTransaction;
-        }
-
-        private void CalculateHash(TransactionVM tranVM)
-        {
-            
         }
     }
 }
