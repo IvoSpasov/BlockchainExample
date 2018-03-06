@@ -17,24 +17,32 @@
             this.validPendingTransactions = new List<Transaction>();
         }
 
+        public Transaction GetTransaction(string tranHash)
+        {
+            var foundTran = validPendingTransactions.FirstOrDefault(t => t.Hash == tranHash);
+            if (foundTran == null)
+                throw new Exception("Transaction not found.");
+
+            return foundTran;
+        }
+
         public void Process(TransactionVM tranVM)
         {
             var newTransaction = Create(tranVM);
-            newTransaction.Hash = Crypto.Sha256(newTransaction.AsJsonString(true));
+            newTransaction.Hash = Crypto.CalculateSHA256ToString(newTransaction.AsJsonString(true));
             this.Validate(newTransaction);
             this.validPendingTransactions.Add(newTransaction);
         }
 
         private void Validate(Transaction currentTransaction)
         {
-            //Check for collisions -> duplicated transactions are skipped
             if (validPendingTransactions.Any(t => t.Hash == currentTransaction.Hash))
-            {
-                throw new Exception("Transaction already added");
-            }
+                throw new Exception("Transaction is already added.");
 
-            //Check for missing / invalid fields
-            //Validate the transaction signature
+            if(!Crypto.IsSignatureValid(currentTransaction))
+                throw new Exception("Transaction signature is not valid.");
+
+            //Check for missing / invalid fields            
             //Check for correct balances?
         }
 

@@ -16,8 +16,22 @@
             this.transactionService = transactionService;
         }
 
+        [HttpGet("hash")]
+        public IActionResult Get(string hash)
+        {
+            try
+            {
+                var foundTransaction = transactionService.GetTransaction(hash);
+                return Json(foundTransaction);
+            }
+            catch (Exception ex)
+            {
+                return NotFound($"Transaction not found: {ex}");
+            }
+        }
+
         [HttpPost("send")]
-        public string Send([FromBody]TransactionVM transactionVM)
+        public IActionResult Send([FromBody]TransactionVM transactionVM)
         {
             try
             {
@@ -28,10 +42,10 @@
             }
             catch (Exception ex)
             {
-                return $"Unable to add transaction to node: {ex}";
+                return BadRequest($"Unable to add transaction to node: {ex}");
             }
 
-            return "Transaction sucessfully added to node.";
+            return Ok("Transaction sucessfully added to node");
         }
     }
 }

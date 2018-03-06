@@ -24,6 +24,18 @@
             return result;
         }
 
+        public static string CalculateSHA256ToString(string text)
+        {
+            byte[] hash = CalculateSHA256(text);
+            var sb = new StringBuilder();
+            foreach (byte b in hash)
+            {
+                sb.Append(b.ToString("x2"));
+            }
+
+            return sb.ToString();
+        }
+
         public static bool IsSignatureValid(Transaction transaction)
         {
             ECPoint publicKeyPoint = GetECPublicKeyPoint(transaction.SenderPublicKey);
@@ -35,7 +47,6 @@
             signer.Init(false, publicKeyParameters);
             
             byte[] tranHashWithoutSignature = CalculateSHA256(transaction.AsJsonString(false));
-            //string hashString = ConvertHash(tranHashWithoutSignature);
             BigInteger signatureR = new BigInteger(transaction.SenderSignature[0], 16);
             BigInteger signatureS = new BigInteger(transaction.SenderSignature[1], 16);
 
@@ -49,17 +60,6 @@
             byte[] key = bigInt.ToByteArray();
             var point = curve.Curve.DecodePoint(key);
             return point;
-        }
-
-        private static string ConvertHash(byte[] hash)
-        {
-            var sb = new StringBuilder();
-            foreach (byte b in hash)
-            {
-                sb.Append(b.ToString("x2"));
-            }
-
-            return sb.ToString();
         }
     }
 }
