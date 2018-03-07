@@ -1,8 +1,8 @@
 ﻿namespace Node.Interfaces
 {
     using System.Collections.Generic;
+    using Node.ApiModels;
     using Node.Models;
-    using Node.ViewModels;
 
     public interface ITransactionService
     {

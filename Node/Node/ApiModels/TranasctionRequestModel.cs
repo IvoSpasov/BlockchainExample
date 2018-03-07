@@ -1,4 +1,4 @@
-﻿namespace Node.ViewModels
+﻿namespace Node.ApiModels
 {
     using System;
     using System.ComponentModel.DataAnnotations;

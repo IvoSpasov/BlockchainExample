@@ -3,8 +3,8 @@
     using System;
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
+    using Node.ApiModels;
     using Node.Interfaces;
-    using Node.ViewModels;
 
     [Produces("application/json")]
     [Route("api/Transactions")]
