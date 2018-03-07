@@ -27,30 +27,5 @@
             this.node.MinigJobs.Add(minerAddress, nextBlockCandidate);
             return nextBlockCandidate;
         }
-
-        private BlockCandidate CreateNextBlockCanidate()
-        {
-            var nextBlockIndex = blockService.GetBlocksCount() + 1;
-            var newBlockCanidate = new BlockCandidate();
-            newBlockCanidate.Index = nextBlockIndex;
-            newBlockCanidate.ConfirmedTransactions = CreateConfirmedTransactions(nextBlockIndex);
-
-
-            return newBlockCanidate;
-        }
-
-        private List<ConfirmedTransaction> CreateConfirmedTransactions(int nextBlockInex)
-        {
-            List<Transaction> pendingTransactions = transactionService.PendingTransactions;
-            var candidatesForConfirmedTransactions = pendingTransactions
-                .Select(pt => new ConfirmedTransaction(pt)
-                {
-                    MinedInBlockIndex = nextBlockInex,
-                    TransferSuccessful = true
-                })
-                .ToList();
-
-            return candidatesForConfirmedTransactions;
-        }
     }
 }

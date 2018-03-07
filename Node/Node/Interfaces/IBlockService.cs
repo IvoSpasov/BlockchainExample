@@ -4,8 +4,8 @@
 
     public interface IBlockService
     {
-        int GetBlocksCount();
-
         Block GetLastBlock();
+
+        BlockCandidate CreateNextBlockCanidate();
     }
 }
