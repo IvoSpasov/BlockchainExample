@@ -1,36 +1,46 @@
 ﻿namespace Node.Models
 {
     using System;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
+    using Utilities.Json;
 
     public class Transaction
     {
+        [JsonProperty("from")]
         public string From { get; set; }
 
+        [JsonProperty("to")]
         public string To { get; set; }
 
+        [JsonProperty("senderPubKey")]
         public string SenderPublicKey { get; set; }
 
+        [JsonProperty("value")]
         public int Value { get; set; }
 
+        [JsonProperty("fee")]
         public int Fee { get; set; }
 
+        [JsonProperty("dateCreated")]
         public DateTime DateCreated { get; set; }
 
+        [MyCustomIgnore]
+        [JsonProperty("senderSignature")]
         public string[] SenderSignature { get; set; }
 
+        [JsonIgnore]
         public string Hash { get; set; }
 
-        public string AsJsonString(bool withSignature)
+        public string AsJsonStringWithSignature()
         {
-            string tran = $@"{{""from"":""{From}"",""to"":""{To}"",""senderPubKey"":""{SenderPublicKey}"",""value"":""{Value}"",""fee"":{Fee},""dateCreated"":""{DateCreated.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")}""";
+            return JsonConvert.SerializeObject(this);
+        }
 
-            if (withSignature)
-            {
-                string signature = $@",""senderSignature"":[""{SenderSignature[0]}"",""{SenderSignature[1]}""]}}";
-                return tran + signature;
-            }
-
-            return tran + "}";
+        public string AsJsonStringWithoutSignature()
+        {
+            var jsonSettings = new JsonSerializerSettings { ContractResolver = new IgnorePropertyContractResolver() };
+            return JsonConvert.SerializeObject(this, jsonSettings);
         }
     }
 }

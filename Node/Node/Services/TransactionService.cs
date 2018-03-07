@@ -3,10 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Node.ApiModels;
     using Node.Interfaces;
     using Node.Models;
     using Node.Utilities;
-    using Node.ViewModels;
 
     public class TransactionService : ITransactionService
     {
@@ -41,7 +41,7 @@
         public void ProcessNewIncomingTransaction(TransactionRequestModel tranRM)
         {
             var newTransaction = Create(tranRM);
-            newTransaction.Hash = Crypto.CalculateSHA256ToString(newTransaction.AsJsonString(true));
+            newTransaction.Hash = Crypto.CalculateSHA256ToString(newTransaction.AsJsonStringWithSignature());
             this.Validate(newTransaction);
             this.pendingTransactions.Add(newTransaction);
         }
