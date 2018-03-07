@@ -46,6 +46,20 @@
             this.pendingTransactions.Add(newTransaction);
         }
 
+        public List<ConfirmedTransaction> CreateConfirmedTransactions(int nextBlockIndex)
+        {
+            List<Transaction> pendingTransactions = this.pendingTransactions;
+            var candidatesForConfirmedTransactions = pendingTransactions
+                .Select(pt => new ConfirmedTransaction(pt)
+                {
+                    MinedInBlockIndex = nextBlockIndex,
+                    TransferSuccessful = true
+                })
+                .ToList();
+
+            return candidatesForConfirmedTransactions;
+        }
+
         private void Validate(Transaction currentTransaction)
         {
             if (pendingTransactions.Any(t => t.Hash == currentTransaction.Hash))
