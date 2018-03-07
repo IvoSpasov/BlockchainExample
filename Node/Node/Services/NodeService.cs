@@ -1,31 +1,26 @@
 ﻿namespace Node.Services
 {
     using System.Collections.Generic;
-    using System.Linq;
     using Node.Interfaces;
     using Node.Models;
 
-    public class NodeService
+    public class NodeService : INodeService
     {
         private Node node;
         private IBlockService blockService;
-        private ITransactionService transactionService;
 
-        public NodeService(IBlockService blockService, ITransactionService transactionService)
+        public NodeService(IBlockService blockService)
         {
             this.node = new Node();
+            this.node.BlockCandidates = new Dictionary<string, BlockCandidate>();
             this.blockService = blockService;
-            this.transactionService = transactionService;
         }
 
-        public BlockCandidate ProcessNextMiningJob(string minerAddress)
+        public void ProcessNextMiningJob(string minerAddress)
         {
-            var nextBlockCandidate = this.CreateNextBlockCanidate();
-            // Remove previous job
-            this.node.MinigJobs.Remove(minerAddress);
-            // Add new job
-            this.node.MinigJobs.Add(minerAddress, nextBlockCandidate);
-            return nextBlockCandidate;
+            var nextBlockCandidate = this.blockService.CreateNextBlockCanidate(minerAddress);
+            this.node.BlockCandidates.Remove(minerAddress);
+            this.node.BlockCandidates.Add(minerAddress, nextBlockCandidate);
         }
     }
 }
