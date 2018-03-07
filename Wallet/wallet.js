@@ -15,15 +15,13 @@ $(document).ready(function () {
         let ripemd160 = new Hashes.RMD160();
         let privateKey = keyPair.getPrivate().toString('hex');
         let publicPoint = keyPair.getPublic();
-        //let pointX = publicPoint.getX().toString('hex');
-        //let pointYCompressed = publicPoint.getY().isOdd() ? '1' : '0';
-        //let publicKey = pointX + pointYCompressed;
-        let publicKey = publicPoint.encode('hex')
-        let address = ripemd160.hex(publicKey);
+        // let publicKey = publicPoint.encode('hex'); // non compressed
+        let publicKeyCompressed = publicPoint.encodeCompressed('hex');
+        let address = ripemd160.hex(publicKeyCompressed);
 
         return {
             privateKey: privateKey,
-            publicKey: publicKey,
+            publicKey: publicKeyCompressed,
             address: address
         }
     }
