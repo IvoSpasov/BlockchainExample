@@ -99,7 +99,7 @@ $(document).ready(function () {
     });
 
     $('#send-transaction').click(() => {
-        let transaction = $('#signed-transaction').text();
+        let transaction = $('#signed-transaction').val();
         $.ajax({
             url: 'http://localhost:57778/api/transactions/send',
             method: 'POST',
