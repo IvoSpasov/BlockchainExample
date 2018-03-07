@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    populateSenderInput();
     let ec = new elliptic.ec('secp256k1');
 
     function generateRandomWallet() {
@@ -58,6 +59,10 @@ $(document).ready(function () {
         return signArr;
     }
 
+    function populateSenderInput() {
+        $('#sender').val(getWalletFromLocalStorage().address);
+    }
+
     $('#new-wallet').click(() => {
         let wallet = generateRandomWallet();
         saveWalletToLocalStorage(wallet);
@@ -67,6 +72,7 @@ $(document).ready(function () {
         $('#private-key').append(wallet.privateKey);
         $('#public-key').append(wallet.publicKey);
         $('#address').append(wallet.address);
+        populateSenderInput();
     });
 
     $('#open-wallet').click(() => {
@@ -80,9 +86,8 @@ $(document).ready(function () {
         $('#private-key2').append(wallet.privateKey);
         $('#public-key2').append(wallet.publicKey);
         $('#address2').append(wallet.address);
+        populateSenderInput();
     });
-
-    $('#sender').val(getWalletFromLocalStorage().address);
 
     $('#sign-transaction').click(() => {
         let to = $('#recipient').val();
@@ -90,7 +95,7 @@ $(document).ready(function () {
         let transaction = createTransactionJson(to, value);
         let signature = signTransaction(transaction);
         transaction.senderSignature = signature;
-        $('#signed-transaction').text(JSON.stringify(transaction));
+        $('#signed-transaction').val(JSON.stringify(transaction, null, '\t'));
     });
 
     $('#send-transaction').click(() => {
@@ -106,8 +111,6 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 console.log(xhr);
-                console.log(status);
-                console.log(error);
             }
         });
     });
