@@ -1,6 +1,7 @@
 ﻿namespace Node.Controllers
 {
     using System;
+    using System.Linq;
     using Microsoft.AspNetCore.Mvc;
     using Node.Interfaces;
     using Node.ViewModels;
@@ -36,7 +37,7 @@
             try
             {
                 if (!ModelState.IsValid)
-                    throw new Exception("Invalid input");
+                    throw new Exception("Invalid input: " + ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage);
 
                 transactionService.Process(transactionVM);
             }
