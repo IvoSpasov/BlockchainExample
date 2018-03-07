@@ -20,10 +20,6 @@
 
         public string Hash { get; set; }
 
-        public int? MinedInBlockIndex { get; set; }
-
-        public bool TransferSuccessful { get; set; }
-        
         public string AsJsonString(bool withSignature)
         {
             string tran = $@"{{""from"":""{From}"",""to"":""{To}"",""senderPubKey"":""{SenderPublicKey}"",""value"":""{Value}"",""fee"":{Fee},""dateCreated"":""{DateCreated.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")}""";

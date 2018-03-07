@@ -10,36 +10,48 @@
 
     public class TransactionService : ITransactionService
     {
-        private List<Transaction> validPendingTransactions;
+        private List<Transaction> pendingTransactions;
+        private List<ConfirmedTransaction> confirmedTransactions;
 
         public TransactionService()
         {
-            this.validPendingTransactions = new List<Transaction>();
+            this.pendingTransactions = new List<Transaction>();
+            this.confirmedTransactions = new List<ConfirmedTransaction>();
+        }
+
+        public List<Transaction> PendingTransactions
+        {
+            get { return this.pendingTransactions; }
+        }
+
+        public List<ConfirmedTransaction> ConfirmedTransactions
+        {
+            get { return this.confirmedTransactions; }
         }
 
         public Transaction GetTransaction(string tranHash)
         {
-            var foundTran = validPendingTransactions.FirstOrDefault(t => t.Hash == tranHash);
-            if (foundTran == null)
+            var foundPendingTran = pendingTransactions.FirstOrDefault(t => t.Hash == tranHash);
+            if (foundPendingTran == null)
                 throw new Exception("Transaction not found.");
 
-            return foundTran;
+            return foundPendingTran;
         }
 
-        public void Process(TransactionVM tranVM)
+        public void ProcessNewIncomingTransaction(TransactionVM tranVM)
         {
             var newTransaction = Create(tranVM);
             newTransaction.Hash = Crypto.CalculateSHA256ToString(newTransaction.AsJsonString(true));
             this.Validate(newTransaction);
-            this.validPendingTransactions.Add(newTransaction);
+            this.pendingTransactions.Add(newTransaction);
         }
 
         private void Validate(Transaction currentTransaction)
         {
-            if (validPendingTransactions.Any(t => t.Hash == currentTransaction.Hash))
+            if (pendingTransactions.Any(t => t.Hash == currentTransaction.Hash))
                 throw new Exception("Transaction is already added.");
 
-            if(!Crypto.IsSignatureValid(currentTransaction))
+            if (!Crypto.IsSignatureValid(currentTransaction))
                 throw new Exception("Transaction signature is not valid.");
 
             //Check for missing / invalid fields            

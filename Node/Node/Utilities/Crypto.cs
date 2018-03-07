@@ -45,7 +45,7 @@
             IDsaKCalculator kCalculator = new HMacDsaKCalculator(new Sha256Digest());
             ECDsaSigner signer = new ECDsaSigner(kCalculator);
             signer.Init(false, publicKeyParameters);
-            
+
             byte[] tranHashWithoutSignature = CalculateSHA256(transaction.AsJsonString(false));
             BigInteger signatureR = new BigInteger(transaction.SenderSignature[0], 16);
             BigInteger signatureS = new BigInteger(transaction.SenderSignature[1], 16);

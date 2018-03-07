@@ -17,8 +17,8 @@
             this.transactionService = transactionService;
         }
 
-        [HttpGet("hash")]
-        public IActionResult Get(string hash)
+        [HttpGet("{hash}")]
+        public IActionResult GetTransaction(string hash)
         {
             try
             {
@@ -31,6 +31,34 @@
             }
         }
 
+        [HttpGet("pending")]
+        public IActionResult GetPendingTransactions()
+        {
+            try
+            {
+                var pendingTranactions = this.transactionService.PendingTransactions;
+                return Json(pendingTranactions);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Couldn't get pending transactions: {ex}");
+            }
+        }
+
+        [HttpGet("confirmed")]
+        public IActionResult GetConfirmedTransactions()
+        {
+            try
+            {
+                var confirmedTranactions = this.transactionService.ConfirmedTransactions;
+                return Json(confirmedTranactions);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Couldn't get confirmed transactions: {ex}");
+            }
+        }
+
         [HttpPost("send")]
         public IActionResult Send([FromBody]TransactionVM transactionVM)
         {
@@ -39,7 +67,7 @@
                 if (!ModelState.IsValid)
                     throw new Exception("Invalid input: " + ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage);
 
-                transactionService.Process(transactionVM);
+                transactionService.ProcessNewIncomingTransaction(transactionVM);
             }
             catch (Exception ex)
             {

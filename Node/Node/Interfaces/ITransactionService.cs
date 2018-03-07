@@ -1,12 +1,17 @@
 ﻿namespace Node.Interfaces
 {
+    using System.Collections.Generic;
     using Node.Models;
     using Node.ViewModels;
 
     public interface ITransactionService
     {
+        List<Transaction> PendingTransactions { get; }
+
+        List<ConfirmedTransaction> ConfirmedTransactions { get; }
+
         Transaction GetTransaction(string tranHash);
 
-        void Process(TransactionVM tranVM);
+        void ProcessNewIncomingTransaction(TransactionVM tranVM);
     }
 }
