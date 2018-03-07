@@ -32,12 +32,12 @@
         [JsonIgnore]
         public string Hash { get; set; }
 
-        public string AsJsonStringWithSignature()
+        public string AsJsonWithSignature()
         {
             return JsonConvert.SerializeObject(this);
         }
 
-        public string AsJsonStringWithoutSignature()
+        public string AsJsonWithoutSignature()
         {
             var jsonSettings = new JsonSerializerSettings { ContractResolver = new IgnorePropertyContractResolver() };
             return JsonConvert.SerializeObject(this, jsonSettings);

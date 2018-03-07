@@ -46,7 +46,7 @@
             ECDsaSigner signer = new ECDsaSigner(kCalculator);
             signer.Init(false, publicKeyParameters);
 
-            byte[] tranHashWithoutSignature = CalculateSHA256(transaction.AsJsonStringWithoutSignature());
+            byte[] tranHashWithoutSignature = CalculateSHA256(transaction.AsJsonWithoutSignature());
             BigInteger signatureR = new BigInteger(transaction.SenderSignature[0], 16);
             BigInteger signatureS = new BigInteger(transaction.SenderSignature[1], 16);
 
