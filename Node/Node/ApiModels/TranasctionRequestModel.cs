@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class TransactionVM
+    public class TransactionRequestModel
     {
         private const int addressLength = 40;
         private const int publicKeyLength = 66;

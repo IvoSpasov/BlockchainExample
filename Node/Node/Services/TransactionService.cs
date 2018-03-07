@@ -38,9 +38,9 @@
             return foundPendingTran;
         }
 
-        public void ProcessNewIncomingTransaction(TransactionVM tranVM)
+        public void ProcessNewIncomingTransaction(TransactionRequestModel tranRM)
         {
-            var newTransaction = Create(tranVM);
+            var newTransaction = Create(tranRM);
             newTransaction.Hash = Crypto.CalculateSHA256ToString(newTransaction.AsJsonString(true));
             this.Validate(newTransaction);
             this.pendingTransactions.Add(newTransaction);
@@ -72,17 +72,17 @@
             //Check for correct balances?
         }
 
-        private Transaction Create(TransactionVM tranVM)
+        private Transaction Create(TransactionRequestModel tranRM)
         {
             var newTransaction = new Transaction
             {
-                From = tranVM.From,
-                To = tranVM.To,
-                SenderPublicKey = tranVM.SenderPubKey,
-                Value = tranVM.Value,
-                Fee = tranVM.Fee,
-                DateCreated = tranVM.DateCreated,
-                SenderSignature = tranVM.SenderSignature
+                From = tranRM.From,
+                To = tranRM.To,
+                SenderPublicKey = tranRM.SenderPubKey,
+                Value = tranRM.Value,
+                Fee = tranRM.Fee,
+                DateCreated = tranRM.DateCreated,
+                SenderSignature = tranRM.SenderSignature
             };
 
             return newTransaction;

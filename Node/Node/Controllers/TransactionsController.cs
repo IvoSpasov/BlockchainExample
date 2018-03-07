@@ -60,14 +60,14 @@
         }
 
         [HttpPost("send")]
-        public IActionResult Send([FromBody]TransactionVM transactionVM)
+        public IActionResult Send([FromBody]TransactionRequestModel transactionRM)
         {
             try
             {
                 if (!ModelState.IsValid)
                     throw new Exception("Invalid input: " + ModelState.Values.FirstOrDefault().Errors.FirstOrDefault().ErrorMessage);
 
-                transactionService.ProcessNewIncomingTransaction(transactionVM);
+                transactionService.ProcessNewIncomingTransaction(transactionRM);
             }
             catch (Exception ex)
             {

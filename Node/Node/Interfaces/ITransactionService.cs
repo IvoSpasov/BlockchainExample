@@ -12,7 +12,7 @@
 
         Transaction GetTransaction(string tranHash);
 
-        void ProcessNewIncomingTransaction(TransactionVM tranVM);
+        void ProcessNewIncomingTransaction(TransactionRequestModel tranRM);
 
         List<ConfirmedTransaction> CreateConfirmedTransactions(int nextBlockIndex);
     }
