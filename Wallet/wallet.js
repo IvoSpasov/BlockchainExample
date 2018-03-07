@@ -52,7 +52,7 @@ $(document).ready(function () {
     function signTransaction(transaction) {
         let transactionString = JSON.stringify(transaction);
         let sha256 = new Hashes.SHA256();
-        let transactionHash = sha256.hex(transactionString).split('');
+        let transactionHash = sha256.hex(transactionString);
         let wallet = getWalletFromLocalStorage();
         let keyPair = ec.keyFromPrivate(wallet.privateKey, 'hex');
         let signature = keyPair.sign(transactionHash);
