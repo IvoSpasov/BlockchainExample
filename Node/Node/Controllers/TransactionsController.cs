@@ -71,7 +71,7 @@
             }
             catch (Exception ex)
             {
-                return BadRequest($"Unable to add transaction to node: {ex}");
+                return BadRequest(new { errorMsg = $"Unable to add transaction to node: {ex}" });
             }
 
             return Ok("Transaction sucessfully added to node");
