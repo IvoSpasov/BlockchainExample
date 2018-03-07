@@ -91,7 +91,7 @@ $(document).ready(function () {
 
     $('#sign-transaction').click(() => {
         let to = $('#recipient').val();
-        let value = $('#value').val();
+        let value = parseInt($('#value').val());
         let transaction = createTransactionJson(to, value);
         let signature = signTransaction(transaction);
         transaction.senderSignature = signature;
