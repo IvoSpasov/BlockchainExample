@@ -4,6 +4,7 @@
     using System.Linq;
     using Node.Interfaces;
     using Node.Models;
+    using Node.Utilities;
 
     public class BlockService : IBlockService
     {
@@ -21,15 +22,19 @@
             return this.blocks.Last();
         }
 
-        public BlockCandidate CreateNextBlockCanidate()
+        public BlockCandidate CreateNextBlockCanidate(string minerAddress)
         {
+            // TODO: add the transaction that pays the miner. Slide 32
             var nextBlockIndex = this.blocks.Count + 1;
-            var newBlockCanidate = new BlockCandidate();
-            newBlockCanidate.Index = nextBlockIndex;
-            newBlockCanidate.ConfirmedTransactions = transactionService.CreateConfirmedTransactions(nextBlockIndex);
+            var newBlockCandidate = new BlockCandidate();
+            newBlockCandidate.Index = nextBlockIndex;
+            newBlockCandidate.Transactions = transactionService.CreateConfirmedTransactions(nextBlockIndex);
+            // is tihs the place for difficutly? isn't it the mining job?
+            newBlockCandidate.PreviousBlockHash = this.blocks.Any() ? this.blocks.Last().BlockHash : null;
+            newBlockCandidate.MinedBy = minerAddress;
+            newBlockCandidate.BlockDataHash = Crypto.CalculateSHA256ToString(newBlockCandidate.AsJson());
 
-
-            return newBlockCanidate;
+            return newBlockCandidate;
         }
     }
 }
