@@ -11,7 +11,11 @@ $(document).ready(function () {
             combinedInput = `${blockDataHash}${dateCreated}${nonce}`;
             minedBlockHash = sha256.hex(combinedInput);
             if (isBlockHashFound(difficulty, minedBlockHash)) {
-                return minedBlockHash;
+                return {
+                    minedBlockHash: minedBlockHash,
+                    nonce: nonce,
+                    timestamp: dateCreated
+                }
             }
         }
     }
@@ -37,10 +41,10 @@ $(document).ready(function () {
     }
 
     $('#mine-a-block').click(async () => {
-        let result = await getMiningJob('abc34');
-        if (result.index) {
-            let foundBlockHash = mineBlockHash(result.blockDataHash, result.difficulty);
-            console.log(foundBlockHash);
+        let miningJob = await getMiningJob('abc34');
+        if (miningJob.index) {
+            let foundBlockInfo = mineBlockHash(result.blockDataHash, result.difficulty);
+            console.log(foundBlockInfo);
         }
     });
 });
