@@ -8,7 +8,6 @@
 
     public class BlockService : IBlockService
     {
-        private const int miningDifficulty = 2;
         private List<Block> blocks;
         private ITransactionService transactionService;
 
@@ -23,7 +22,7 @@
             return this.blocks.Last();
         }
 
-        public BlockCandidate CreateNextBlockCanidate(string minerAddress)
+        public BlockCandidate CreateNextBlockCanidate(string minerAddress, int miningDifficulty)
         {
             // TODO: add the transaction that pays the miner. Slide 32
             var nextBlockIndex = this.blocks.Count + 1;

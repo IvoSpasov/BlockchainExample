@@ -6,6 +6,6 @@
     {
         Block GetLastBlock();
 
-        BlockCandidate CreateNextBlockCanidate(string minerAddress);
+        BlockCandidate CreateNextBlockCanidate(string minerAddress, int miningDifficulty);
     }
 }
