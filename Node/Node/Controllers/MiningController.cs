@@ -9,11 +9,11 @@
     [Route("api/Mining")]
     public class MiningController : Controller
     {
-        private INodeService nodeService;
+        private IBlockService blockService;
 
-        public MiningController(INodeService nodeService)
+        public MiningController(IBlockService blockService)
         {
-            this.nodeService = nodeService;
+            this.blockService = blockService;
         }
 
         [HttpGet("get-mining-job/{minerAddress}")]
@@ -21,7 +21,7 @@
         {
             try
             {
-                BlockCandidate bc = this.nodeService.ProcessNextBlockCandiate(minerAddress);
+                BlockCandidate bc = this.blockService.ProcessNextBlockCandiate(minerAddress);
                 var miningJob = new MiningJobResponseModel()
                 {
                     BlockIndex = bc.Index,

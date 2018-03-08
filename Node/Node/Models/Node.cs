@@ -4,14 +4,8 @@
 
     public class Node
     {
-        public string[] Peers { get; set; }
-
-        public Block[] Blocks { get; set; }
-
-        public PendingTransaction[] PendingTransactions { get; set; }
-
         public int Difficulty { get; set; }
 
-        public Dictionary<string, BlockCandidate> BlockCandidates { get; set; }
+        public List<string> Peers { get; set; }
     }
 }

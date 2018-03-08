@@ -43,7 +43,7 @@ $(document).ready(function () {
     $('#mine-a-block').click(async () => {
         let miningJob = await getMiningJob('abc34');
         if (miningJob.index) {
-            let foundBlockInfo = mineBlockHash(result.blockDataHash, result.difficulty);
+            let foundBlockInfo = mineBlockHash(miningJob.blockDataHash, miningJob.difficulty);
             console.log(foundBlockInfo);
         }
     });

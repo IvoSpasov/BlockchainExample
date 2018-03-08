@@ -4,8 +4,6 @@
 
     public interface IBlockService
     {
-        Block GetLastBlock();
-
-        BlockCandidate CreateNextBlockCanidate(string minerAddress, int miningDifficulty);
+        BlockCandidate ProcessNextBlockCandiate(string minerAddress);
     }
 }
