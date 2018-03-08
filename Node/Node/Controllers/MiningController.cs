@@ -1,5 +1,6 @@
 ﻿namespace Node.Controllers
 {
+    using System;
     using Microsoft.AspNetCore.Mvc;
     using Node.Interfaces;
     using Node.Models;
@@ -16,20 +17,27 @@
         }
 
         [HttpGet("get-mining-job/{minerAddress}")]
-        public JsonResult GetNextMiningJob(string minerAddress)
+        public IActionResult GetNextMiningJob(string minerAddress)
         {
-            BlockCandidate bc = this.nodeService.ProcessNextBlockCandiate(minerAddress);
-            var miningJob = new MiningJobResponseModel()
+            try
             {
-                BlockIndex = bc.Index,
-                TransactionsIncluded = bc.Transactions.Count,
-                ExpectedReward = 5000350, //TODO: where is this comming from
-                RewardAddress = minerAddress,
-                BlockDataHash = bc.BlockDataHash,
-                Difficulty = bc.Difficulty
-            };
+                BlockCandidate bc = this.nodeService.ProcessNextBlockCandiate(minerAddress);
+                var miningJob = new MiningJobResponseModel()
+                {
+                    BlockIndex = bc.Index,
+                    TransactionsIncluded = bc.Transactions.Count,
+                    ExpectedReward = 5000350, //TODO: where is this comming from
+                    RewardAddress = minerAddress,
+                    BlockDataHash = bc.BlockDataHash,
+                    Difficulty = bc.Difficulty
+                };
 
-            return Json(miningJob);
+                return Json(miningJob);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Could not get mining job: {ex}");
+            }
         }
     }
 }
