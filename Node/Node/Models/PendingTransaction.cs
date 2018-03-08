@@ -6,7 +6,7 @@
     using Utilities.Json;
     using Utilities.Json.CustomAttributes;
 
-    public class Transaction
+    public class PendingTransaction
     {
         [JsonProperty("from")]
         public string From { get; set; }

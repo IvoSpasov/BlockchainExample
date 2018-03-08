@@ -2,9 +2,9 @@
 {
     using Newtonsoft.Json;
 
-    public class ConfirmedTransaction : Transaction
+    public class ConfirmedTransaction : PendingTransaction
     {
-        public ConfirmedTransaction(Transaction transaction)
+        public ConfirmedTransaction(PendingTransaction transaction)
         {
             this.From = transaction.From;
             this.To = transaction.To;

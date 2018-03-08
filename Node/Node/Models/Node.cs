@@ -8,7 +8,7 @@
 
         public Block[] Blocks { get; set; }
 
-        public Transaction[] PendingTransactions { get; set; }
+        public PendingTransaction[] PendingTransactions { get; set; }
 
         public int Difficulty { get; set; }
 

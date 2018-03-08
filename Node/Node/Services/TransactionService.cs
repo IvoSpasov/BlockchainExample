@@ -10,16 +10,16 @@
 
     public class TransactionService : ITransactionService
     {
-        private List<Transaction> pendingTransactions;
+        private List<PendingTransaction> pendingTransactions;
         private List<ConfirmedTransaction> confirmedTransactions;
 
         public TransactionService()
         {
-            this.pendingTransactions = new List<Transaction>();
+            this.pendingTransactions = new List<PendingTransaction>();
             this.confirmedTransactions = new List<ConfirmedTransaction>();
         }
 
-        public List<Transaction> PendingTransactions
+        public List<PendingTransaction> PendingTransactions
         {
             get { return this.pendingTransactions; }
         }
@@ -29,7 +29,7 @@
             get { return this.confirmedTransactions; }
         }
 
-        public Transaction GetTransaction(string tranHash)
+        public PendingTransaction GetTransaction(string tranHash)
         {
             var foundPendingTran = pendingTransactions.FirstOrDefault(t => t.Hash == tranHash);
             if (foundPendingTran == null)
@@ -48,7 +48,7 @@
 
         public List<ConfirmedTransaction> CreateConfirmedTransactions(int nextBlockIndex)
         {
-            List<Transaction> pendingTransactions = this.pendingTransactions;
+            List<PendingTransaction> pendingTransactions = this.pendingTransactions;
             var candidatesForConfirmedTransactions = pendingTransactions
                 .Select(pt => new ConfirmedTransaction(pt)
                 {
@@ -60,7 +60,7 @@
             return candidatesForConfirmedTransactions;
         }
 
-        private void Validate(Transaction currentTransaction)
+        private void Validate(PendingTransaction currentTransaction)
         {
             if (pendingTransactions.Any(t => t.Hash == currentTransaction.Hash))
                 throw new Exception("Transaction is already added.");
@@ -72,9 +72,9 @@
             //Check for correct balances?
         }
 
-        private Transaction Create(TransactionRequestModel tranRM)
+        private PendingTransaction Create(TransactionRequestModel tranRM)
         {
-            var newTransaction = new Transaction
+            var newTransaction = new PendingTransaction
             {
                 From = tranRM.From,
                 To = tranRM.To,

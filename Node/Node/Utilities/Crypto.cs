@@ -36,7 +36,7 @@
             return sb.ToString();
         }
 
-        public static bool IsSignatureValid(Transaction transaction)
+        public static bool IsSignatureValid(PendingTransaction transaction)
         {
             ECPoint publicKeyPoint = GetECPublicKeyPoint(transaction.SenderPublicKey);
             ECDomainParameters ecSpec = new ECDomainParameters(curve.Curve, curve.G, curve.N, curve.H);

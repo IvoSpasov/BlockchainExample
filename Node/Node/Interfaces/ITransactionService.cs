@@ -6,11 +6,11 @@
 
     public interface ITransactionService
     {
-        List<Transaction> PendingTransactions { get; }
+        List<PendingTransaction> PendingTransactions { get; }
 
         List<ConfirmedTransaction> ConfirmedTransactions { get; }
 
-        Transaction GetTransaction(string tranHash);
+        PendingTransaction GetTransaction(string tranHash);
 
         void ProcessNewIncomingTransaction(TransactionRequestModel tranRM);
 

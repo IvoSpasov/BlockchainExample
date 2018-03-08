@@ -7,8 +7,8 @@
     public class NodeService : INodeService
     {
         private const int miningDifficulty = 2;
-        private Node node;
         private IBlockService blockService;
+        private Node node;
 
         public NodeService(IBlockService blockService)
         {
