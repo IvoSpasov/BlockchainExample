@@ -1,9 +1,9 @@
-﻿namespace Node.Utilities.Json
+﻿namespace Node.Utilities.Json.CustomAttributes
 {
     using System;
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class MyCustomIgnore : Attribute
+    public class AlwaysIgnore : Attribute
     {
     }
 }
