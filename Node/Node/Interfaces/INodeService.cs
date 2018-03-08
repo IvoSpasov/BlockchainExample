@@ -1,7 +1,9 @@
 ﻿namespace Node.Interfaces
 {
+    using Node.Models;
+
     public interface INodeService
     {
-        void ProcessNextMiningJob(string minerAddress);
+        BlockCandidate ProcessNextBlockCandiate(string minerAddress);
     }
 }

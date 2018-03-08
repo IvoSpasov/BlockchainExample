@@ -13,7 +13,5 @@
         public int Difficulty { get; set; }
 
         public Dictionary<string, BlockCandidate> BlockCandidates { get; set; }
-
-        public Dictionary<string, MiningJob> MiningJobs { get; set; }
     }
 }

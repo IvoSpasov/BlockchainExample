@@ -2,6 +2,7 @@
 {
     using Microsoft.AspNetCore.Mvc;
     using Node.Interfaces;
+    using Node.Models;
 
     [Produces("application/json")]
     [Route("api/Mining")]
@@ -17,8 +18,18 @@
         [HttpGet("get-mining-job/{minerAddress}")]
         public JsonResult GetNextMiningJob(string minerAddress)
         {
-            this.nodeService.ProcessNextMiningJob(minerAddress);
-            return Json("123");
+            BlockCandidate bc = this.nodeService.ProcessNextBlockCandiate(minerAddress);
+            var miningJob = new MiningJobResponseModel()
+            {
+                BlockIndex = bc.Index,
+                TransactionsIncluded = bc.Transactions.Count,
+                ExpectedReward = 5000350, //TODO: where is this comming from
+                RewardAddress = minerAddress,
+                BlockDataHash = bc.BlockDataHash,
+                Difficulty = bc.Difficulty
+            };
+
+            return Json(miningJob);
         }
     }
 }

@@ -11,16 +11,20 @@
 
         public NodeService(IBlockService blockService)
         {
-            this.node = new Node();
-            this.node.BlockCandidates = new Dictionary<string, BlockCandidate>();
+            this.node = new Node
+            {
+                BlockCandidates = new Dictionary<string, BlockCandidate>()
+            };
+
             this.blockService = blockService;
         }
 
-        public void ProcessNextMiningJob(string minerAddress)
+        public BlockCandidate ProcessNextBlockCandiate(string minerAddress)
         {
-            var nextBlockCandidate = this.blockService.CreateNextBlockCanidate(minerAddress);
+            BlockCandidate nextBlockCandidate = this.blockService.CreateNextBlockCanidate(minerAddress);
             this.node.BlockCandidates.Remove(minerAddress);
             this.node.BlockCandidates.Add(minerAddress, nextBlockCandidate);
+            return nextBlockCandidate;
         }
     }
 }
