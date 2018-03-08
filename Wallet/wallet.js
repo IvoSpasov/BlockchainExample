@@ -32,7 +32,9 @@ $(document).ready(function () {
     }
 
     function getWalletFromLocalStorage() {
-        return JSON.parse(localStorage.wallet);
+        if (localStorage.wallet) {
+            return JSON.parse(localStorage.wallet);
+        }
     }
 
     function createTransactionJson(to, value) {
@@ -60,7 +62,10 @@ $(document).ready(function () {
     }
 
     function populateSenderInput() {
-        $('#sender').val(getWalletFromLocalStorage().address);
+        let wallet = getWalletFromLocalStorage();
+        if (wallet) {
+            $('#sender').val(wallet.address);
+        }
     }
 
     $('#new-wallet').click(() => {
