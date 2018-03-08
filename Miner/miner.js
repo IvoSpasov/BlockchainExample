@@ -1,40 +1,46 @@
 $(document).ready(function () {
-    function calculate() {
+    function mineBlockHash(blockDataHash, difficulty) {
+        let sha256 = new Hashes.SHA256();
         let nonce = 0;
         let dateCreated;
-        let blockDataHash = 'AA5FB4AFB0154D2BDD3315E074F219351FDF13908F1C515E07BE12124A3D3760';
-        let together = blockDataHash;
-        let sha256 = new Hashes.SHA256();
-        let resultHash;
+        let combinedInput;
+        let minedBlockHash;
         while (true) {
-            dateCreated = new Date().toISOString();
             nonce++;
-            together += dateCreated + nonce;
-            resultHash = sha256.hex(together);
-
-            if(checkForFoundHash(2, resultHash)){
-                return resultHash;
+            dateCreated = new Date().toISOString();
+            combinedInput = `${blockDataHash}${dateCreated}${nonce}`;
+            minedBlockHash = sha256.hex(combinedInput);
+            if (isBlockHashFound(difficulty, minedBlockHash)) {
+                return minedBlockHash;
             }
         }
     }
 
-    function checkForFoundHash(difficulty, hash) {
+    function isBlockHashFound(difficulty, minedBlockHash) {
         let zeros = Array(difficulty + 1).join('0');
-        let firstChars = hash.substr(0, difficulty);
-        let found = zeros == firstChars;
-        return found;
+        let firstChars = minedBlockHash.substr(0, difficulty);
+        return zeros == firstChars;
     }
 
-    $('#get-mining-job').click(() => {
-        $.ajax({
-            url: 'http://localhost:57778/api/mining/get-mining-job',
+    async function getMiningJob(minerAddress) {
+        let result = await $.ajax({
+            url: 'http://localhost:57778/api/mining/get-mining-job/' + minerAddress,
             method: 'GET',
-            success: function (result, status, xhr) {
-
-            },
+            contentType: 'application/json',
+            dataType: 'json',
             error: function (xhr, status, error) {
                 console.log(xhr);
             }
         });
+
+        return result;
+    }
+
+    $('#mine-a-block').click(async () => {
+        let result = await getMiningJob('abc34');
+        if (result.index) {
+            let foundBlockHash = mineBlockHash(result.blockDataHash, result.difficulty);
+            console.log(foundBlockHash);
+        }
     });
 });
