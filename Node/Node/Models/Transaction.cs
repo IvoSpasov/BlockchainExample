@@ -4,6 +4,7 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using Utilities.Json;
+    using Utilities.Json.CustomAttributes;
 
     public class Transaction
     {
@@ -12,9 +13,6 @@
 
         [JsonProperty("to")]
         public string To { get; set; }
-
-        [JsonProperty("senderPubKey")]
-        public string SenderPublicKey { get; set; }
 
         [JsonProperty("value")]
         public int Value { get; set; }
@@ -25,22 +23,39 @@
         [JsonProperty("dateCreated")]
         public DateTime DateCreated { get; set; }
 
-        [MyCustomIgnore]
+        [JsonProperty("senderPubKey")]
+        public string SenderPublicKey { get; set; }
+
+        [SignatureIgnore]
         [JsonProperty("senderSignature")]
         public string[] SenderSignature { get; set; }
 
-        [JsonIgnore]
+        [HashIgnore]
+        [JsonProperty("transactionHash")]
         public string Hash { get; set; }
 
-        public string AsJsonWithSignature()
+        public string AsJsonWithoutSignatureAndHash()
         {
-            return JsonConvert.SerializeObject(this);
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new IgnorePropertiesContractResolver(typeof(SignatureIgnore), typeof(HashIgnore))
+            };
+
+            return JsonConvert.SerializeObject(this, jsonSettings);
         }
 
-        public string AsJsonWithoutSignature()
+        public string AsJsonWithoutHash()
         {
-            var jsonSettings = new JsonSerializerSettings { ContractResolver = new IgnorePropertyContractResolver() };
+            var jsonSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new IgnorePropertiesContractResolver(typeof(HashIgnore))
+            };
+
             return JsonConvert.SerializeObject(this, jsonSettings);
+        }
+        public string AsJson()
+        {
+            return JsonConvert.SerializeObject(this);
         }
     }
 }

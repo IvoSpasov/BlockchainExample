@@ -41,7 +41,7 @@
         public void ProcessNewIncomingTransaction(TransactionRequestModel tranRM)
         {
             var newTransaction = Create(tranRM);
-            newTransaction.Hash = Crypto.CalculateSHA256ToString(newTransaction.AsJsonWithSignature());
+            newTransaction.Hash = Crypto.CalculateSHA256ToString(newTransaction.AsJsonWithoutHash());
             this.Validate(newTransaction);
             this.pendingTransactions.Add(newTransaction);
         }

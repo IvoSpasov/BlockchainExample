@@ -41,10 +41,10 @@ $(document).ready(function () {
         return {
             from: wallet.address,
             to: to,
-            senderPubKey: wallet.publicKey,
             value: value,
             fee: 10,
-            dateCreated: new Date().toISOString()
+            dateCreated: new Date().toISOString(),
+            senderPubKey: wallet.publicKey
         }
     }
 
