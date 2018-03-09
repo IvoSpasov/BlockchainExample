@@ -41,8 +41,8 @@
             }
         }
 
-        [HttpGet("submit-mined-job")]
-        public IActionResult SubmitMinedJob(MiningJobRequestModel miningJobRM)
+        [HttpPost("submit-mined-job")]
+        public IActionResult SubmitMinedJob([FromBody]MiningJobRequestModel miningJobRM)
         {
             try
             {

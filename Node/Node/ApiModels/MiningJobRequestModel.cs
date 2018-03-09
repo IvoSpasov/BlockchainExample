@@ -8,10 +8,10 @@
 
         public string BlockDataHash { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        public DateTime Timestamp { get; set; }
 
         public int Nonce { get; set; }
 
-        public string BlockHash { get; set; }
+        public string MinedBlockHash { get; set; }
     }
 }

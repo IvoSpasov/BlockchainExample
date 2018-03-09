@@ -39,13 +39,13 @@
             if (foundBlockCandidate.BlockDataHash != miningJobRM.BlockDataHash)
                 throw new Exception("Mining job block data hash is different than the hash of the prepared block candidate.");
 
-            if (foundBlockCandidate.Index <= this.blocks.Last().Index)
+            if (this.blocks.Any() && foundBlockCandidate.Index <= this.blocks.Last().Index)
             {
                 this.SyncNode(foundBlockCandidate.Index);
                 throw new Exception($"Sorry but a block with index {foundBlockCandidate.Index} was already mined.");
             }
 
-            if (this.ValidateFoundBlockHash(miningJobRM))
+            if (!this.IsFoundBlockHashValid(miningJobRM))
                 throw new Exception("Found block hash is invalid"); 
             //TODO: During synchronization with other nodes, a check for valid hash for incoming blocks must be done as well.
 
@@ -83,8 +83,8 @@
                 MinedBy = blockCandidate.MinedBy,
                 BlockDataHash = blockCandidate.BlockDataHash,
                 Nonce = miningJobRM.Nonce,
-                DateCreated = miningJobRM.DateCreated,
-                BlockHash = miningJobRM.BlockHash
+                DateCreated = miningJobRM.Timestamp,
+                BlockHash = miningJobRM.MinedBlockHash
             };
 
             return newBlock;
@@ -99,11 +99,13 @@
             }
         }
 
-        private bool ValidateFoundBlockHash(MiningJobRequestModel miningJobRM)
+        private bool IsFoundBlockHashValid(MiningJobRequestModel miningJobRM)
         {
-            string combinedInput = $"{miningJobRM.BlockDataHash}{miningJobRM.DateCreated}{miningJobRM.Nonce}";
+            // Can be added to utils if needed elsewhere
+            string timestampIso8601 = miningJobRM.Timestamp.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+            string combinedInput = $"{miningJobRM.BlockDataHash}{timestampIso8601}{miningJobRM.Nonce}";
             string calculatedHash = Crypto.CalculateSHA256ToString(combinedInput);
-            return miningJobRM.BlockHash == calculatedHash;
+            return miningJobRM.MinedBlockHash == calculatedHash;
         }
     }
 }
