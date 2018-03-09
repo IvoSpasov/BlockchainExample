@@ -40,11 +40,31 @@ $(document).ready(function () {
         return result;
     }
 
+    function submitCompleteMiningJob(completeMiningJob) {        
+        console.log(completeMiningJob);
+        $.ajax({
+            url: 'http://localhost:57778/api/mining/submit-mined-job',
+            method: 'POST',
+            data: JSON.stringify(completeMiningJob),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (result) {
+                console.log(result);
+            },
+            error: function (xhr) {
+                console.log(xhr);
+            }
+        });
+    }
+
     $('#mine-a-block').click(async () => {
-        let miningJob = await getMiningJob('abc34');
-        if (miningJob.index) {
-            let foundBlockInfo = mineBlockHash(miningJob.blockDataHash, miningJob.difficulty);
-            console.log(foundBlockInfo);
+        let minerAddress = $('#miner-address').val();
+        let newMiningJob = await getMiningJob(minerAddress);
+        if (newMiningJob.index) {
+            let completeMiningJob = mineBlockHash(newMiningJob.blockDataHash, newMiningJob.difficulty);
+            completeMiningJob.minerAddress = minerAddress;
+            completeMiningJob.blockDataHash = newMiningJob.blockDataHash;
+            submitCompleteMiningJob(completeMiningJob);
         }
     });
 });
