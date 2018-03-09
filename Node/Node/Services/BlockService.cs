@@ -36,13 +36,18 @@
             if (!isFound)
                 throw new Exception("No miner job associated with this miner address.");
 
+            if (foundBlockCandidate.BlockDataHash != miningJobRM.BlockDataHash)
+                throw new Exception("Mining job block data hash is different than the hash of the prepared block candidate.");
+
             if (foundBlockCandidate.Index <= this.blocks.Last().Index)
             {
                 this.SyncNode(foundBlockCandidate.Index);
-                throw new Exception("Sorry but this block was already mined.");
+                throw new Exception($"Sorry but a block with index {foundBlockCandidate.Index} was already mined.");
             }
 
-            // validate block hash
+            if (this.ValidateFoundBlockHash(miningJobRM))
+                throw new Exception("Found block hash is invalid"); 
+            //TODO: During synchronization with other nodes, a check for valid hash for incoming blocks must be done as well.
 
             Block newBlock = this.CreateNewBlock(miningJobRM, foundBlockCandidate);
             this.blocks.Add(newBlock);
@@ -92,6 +97,13 @@
             {
                 this.transactionService.ClearAllAddedToBlockPendingTransactions(this.blocks[i].Transactions);
             }
+        }
+
+        private bool ValidateFoundBlockHash(MiningJobRequestModel miningJobRM)
+        {
+            string combinedInput = $"{miningJobRM.BlockDataHash}{miningJobRM.DateCreated}{miningJobRM.Nonce}";
+            string calculatedHash = Crypto.CalculateSHA256ToString(combinedInput);
+            return miningJobRM.BlockHash == calculatedHash;
         }
     }
 }
