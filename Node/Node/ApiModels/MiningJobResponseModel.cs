@@ -1,4 +1,4 @@
-﻿namespace Node.Models
+﻿namespace Node.ApiModels
 {
     using Newtonsoft.Json;
 

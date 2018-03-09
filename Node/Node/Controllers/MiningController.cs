@@ -2,6 +2,7 @@
 {
     using System;
     using Microsoft.AspNetCore.Mvc;
+    using Node.ApiModels;
     using Node.Interfaces;
     using Node.Models;
 
@@ -37,6 +38,20 @@
             catch (Exception ex)
             {
                 return BadRequest($"Could not get mining job: {ex}");
+            }
+        }
+
+        [HttpGet("submit-mined-job")]
+        public IActionResult SubmitMinedJob(MiningJobRequestModel miningJobRM)
+        {
+            try
+            {
+                this.blockService.ProcessNextBlock(miningJobRM);
+                return Ok("New block sucessfully added to the chain.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex}");
             }
         }
     }

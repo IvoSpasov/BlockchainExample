@@ -1,7 +1,9 @@
 ﻿namespace Node.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Node.ApiModels;
     using Node.Interfaces;
     using Node.Models;
     using Node.Utilities;
@@ -28,6 +30,17 @@
             return nextBlockCandidate;
         }
 
+        public void ProcessNextBlock(MiningJobRequestModel miningJobRM)
+        {
+            bool isFound = this.blockCandidates.TryGetValue(miningJobRM.MinerAddress, out BlockCandidate foundBlockCandidate);
+            if (!isFound)
+                throw new Exception("No miner job associated with this miner address");
+
+            Block newBlock = this.CreateNewBlock(miningJobRM, foundBlockCandidate);
+            this.blocks.Add(newBlock);
+            // must remove all pending transactions
+        }
+
         private BlockCandidate CreateNextBlockCanidate(string minerAddress, int miningDifficulty)
         {
             // TODO: add the transaction that pays the miner. Slide 32
@@ -43,6 +56,24 @@
 
             newBlockCandidate.BlockDataHash = Crypto.CalculateSHA256ToString(newBlockCandidate.AsJson());
             return newBlockCandidate;
+        }
+
+        private Block CreateNewBlock(MiningJobRequestModel miningJobRM, BlockCandidate blockCandidate)
+        {
+            Block newBlock = new Block()
+            {
+                Index = blockCandidate.Index,
+                Transactions = blockCandidate.Transactions,
+                Difficulty = blockCandidate.Difficulty,
+                PreviousBlockHash = blockCandidate.PreviousBlockHash,
+                MinedBy = blockCandidate.MinedBy,
+                BlockDataHash = blockCandidate.BlockDataHash,
+                Nonce = miningJobRM.Nonce,
+                DateCreated = miningJobRM.DateCreated,
+                BlockHash = miningJobRM.BlockHash
+            };
+
+            return newBlock;
         }
     }
 }
