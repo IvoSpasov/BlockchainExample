@@ -45,20 +45,6 @@
             }
         }
 
-        [HttpGet("confirmed")]
-        public IActionResult GetConfirmedTransactions()
-        {
-            try
-            {
-                var confirmedTranactions = this.transactionService.ConfirmedTransactions;
-                return Json(confirmedTranactions);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"Couldn't get confirmed transactions: {ex}");
-            }
-        }
-
         [HttpPost("send")]
         public IActionResult Send([FromBody]TransactionRequestModel transactionRM)
         {

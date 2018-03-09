@@ -8,8 +8,6 @@
     {
         List<PendingTransaction> PendingTransactions { get; }
 
-        List<ConfirmedTransaction> ConfirmedTransactions { get; }
-
         PendingTransaction GetTransaction(string tranHash);
 
         void ProcessNewIncomingTransaction(TransactionRequestModel tranRM);

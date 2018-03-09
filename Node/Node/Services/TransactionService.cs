@@ -11,22 +11,15 @@
     public class TransactionService : ITransactionService
     {
         private List<PendingTransaction> pendingTransactions;
-        private List<ConfirmedTransaction> confirmedTransactions;
 
         public TransactionService()
         {
             this.pendingTransactions = new List<PendingTransaction>();
-            this.confirmedTransactions = new List<ConfirmedTransaction>();
         }
 
         public List<PendingTransaction> PendingTransactions
         {
             get { return this.pendingTransactions; }
-        }
-
-        public List<ConfirmedTransaction> ConfirmedTransactions
-        {
-            get { return this.confirmedTransactions; }
         }
 
         public PendingTransaction GetTransaction(string tranHash)
