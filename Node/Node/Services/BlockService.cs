@@ -34,11 +34,20 @@
         {
             bool isFound = this.blockCandidates.TryGetValue(miningJobRM.MinerAddress, out BlockCandidate foundBlockCandidate);
             if (!isFound)
-                throw new Exception("No miner job associated with this miner address");
+                throw new Exception("No miner job associated with this miner address.");
+
+            if (foundBlockCandidate.Index <= this.blocks.Last().Index)
+            {
+                this.SyncNode(foundBlockCandidate.Index);
+                throw new Exception("Sorry but this block was already mined.");
+            }
+
+            // validate block hash
 
             Block newBlock = this.CreateNewBlock(miningJobRM, foundBlockCandidate);
             this.blocks.Add(newBlock);
-            this.transactionService.ClearAllAddedToBlockPendingTransactions(foundBlockCandidate.Transactions);
+            this.transactionService.ClearAllAddedToBlockPendingTransactions(newBlock.Transactions);
+            this.blockCandidates.Clear();
         }
 
         private BlockCandidate CreateNextBlockCanidate(string minerAddress, int miningDifficulty)
@@ -74,6 +83,15 @@
             };
 
             return newBlock;
+        }
+
+        private void SyncNode(int foundBlockCanidateIndex)
+        {
+            this.blockCandidates.Clear();
+            for (int i = foundBlockCanidateIndex; i <= this.blocks.Last().Index; i++)
+            {
+                this.transactionService.ClearAllAddedToBlockPendingTransactions(this.blocks[i].Transactions);
+            }
         }
     }
 }
