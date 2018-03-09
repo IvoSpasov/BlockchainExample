@@ -13,5 +13,7 @@
         void ProcessNewIncomingTransaction(TransactionRequestModel tranRM);
 
         List<ConfirmedTransaction> CreateConfirmedTransactions(int nextBlockIndex);
+
+        void ClearAllAddedToBlockPendingTransactions(List<ConfirmedTransaction> addedToBlockPT);
     }
 }

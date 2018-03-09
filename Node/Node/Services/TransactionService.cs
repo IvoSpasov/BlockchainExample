@@ -53,6 +53,15 @@
             return candidatesForConfirmedTransactions;
         }
 
+        public void ClearAllAddedToBlockPendingTransactions(List<ConfirmedTransaction> addedToBlockCT)
+        {
+            foreach (var addedCT in addedToBlockCT)
+            {
+                var pendingTransaction = this.pendingTransactions.FirstOrDefault(pt => pt.Hash == addedCT.Hash);
+                this.pendingTransactions.Remove(pendingTransaction);
+            }
+        }
+
         private void Validate(PendingTransaction currentTransaction)
         {
             if (pendingTransactions.Any(t => t.Hash == currentTransaction.Hash))

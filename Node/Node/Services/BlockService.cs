@@ -38,7 +38,7 @@
 
             Block newBlock = this.CreateNewBlock(miningJobRM, foundBlockCandidate);
             this.blocks.Add(newBlock);
-            // must remove all pending transactions
+            this.transactionService.ClearAllAddedToBlockPendingTransactions(foundBlockCandidate.Transactions);
         }
 
         private BlockCandidate CreateNextBlockCanidate(string minerAddress, int miningDifficulty)
