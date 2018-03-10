@@ -15,7 +15,7 @@
         public string To { get; set; }
 
         [JsonProperty("value")]
-        public int Value { get; set; }
+        public long Value { get; set; }
 
         [JsonProperty("fee")]
         public int Fee { get; set; }
