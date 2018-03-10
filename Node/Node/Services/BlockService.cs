@@ -86,6 +86,11 @@
              return this.Blocks.SelectMany(b => b.ConfirmedTransactions).ToList();
         }
 
+        public IEnumerable<ConfirmedTransaction> GetConfirmedTransactions(string address)
+        {
+            return this.Blocks.SelectMany(b => b.ConfirmedTransactions.Where(t => t.From == address || t.To == address));
+        }
+
         private BlockCandidate CreateNextBlockCanidate(string minerAddress, int miningDifficulty)
         {
             // TODO: add the transaction that pays the miner. Slide 32

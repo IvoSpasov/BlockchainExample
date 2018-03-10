@@ -27,6 +27,11 @@
             return pendingTransactions.FirstOrDefault(t => t.Hash == tranHash);
         }
 
+        public IEnumerable<PendingTransaction> GetPendingTransactions(string address)
+        {
+            return this.pendingTransactions.Where(t => t.From == address || t.To == address);
+        }
+
         public void ProcessNewIncomingTransaction(TransactionRequestModel tranRM)
         {
             var newTransaction = Create(tranRM);

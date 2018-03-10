@@ -10,6 +10,8 @@
 
         PendingTransaction GetPendingTransaction(string tranHash);
 
+        IEnumerable<PendingTransaction> GetPendingTransactions(string address);
+
         void ProcessNewIncomingTransaction(TransactionRequestModel tranRM);
 
         List<ConfirmedTransaction> CreateConfirmedTransactions(int nextBlockIndex);

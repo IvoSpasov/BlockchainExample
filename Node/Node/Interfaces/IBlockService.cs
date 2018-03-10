@@ -17,5 +17,7 @@
         ConfirmedTransaction GetConfrimedTransaction(string tranHash);
 
         List<ConfirmedTransaction> GetAllConfirmedTransactions();
+
+        IEnumerable<ConfirmedTransaction> GetConfirmedTransactions(string address);
     }
 }
