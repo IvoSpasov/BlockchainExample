@@ -22,6 +22,14 @@
             this.transactionService = transactionService;
         }
 
+        public List<Block> Blocks
+        {
+            get
+            {
+                return this.blocks;
+            }
+        }
+
         public BlockCandidate ProcessNextBlockCandiate(string minerAddress)
         {
             BlockCandidate nextBlockCandidate = this.CreateNextBlockCanidate(minerAddress, miningDifficulty);
@@ -46,7 +54,7 @@
             }
 
             if (!this.IsFoundBlockHashValid(miningJobRM))
-                throw new Exception("Found block hash is invalid"); 
+                throw new Exception("Found block hash is invalid");
             //TODO: During synchronization with other nodes, a check for valid hash for incoming blocks must be done as well.
 
             Block newBlock = this.CreateNewBlock(miningJobRM, foundBlockCandidate);

@@ -37,6 +37,7 @@ $(document).ready(function () {
         }
     }
 
+    // create a transaction object
     function createTransactionJson(to, value) {
         let wallet = getWalletFromLocalStorage();
 
