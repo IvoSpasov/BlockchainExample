@@ -13,5 +13,7 @@
         BlockCandidate ProcessNextBlockCandiate(string minerAddress);
 
         void ProcessNextBlock(MiningJobRequestModel miningJobRM);
+
+        ConfirmedTransaction GetConfrimedTransaction(string tranHash);
     }
 }

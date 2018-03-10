@@ -10,10 +10,12 @@
     [Route("api/Transactions")]
     public class TransactionsController : Controller
     {
+        private IBlockService blockService;
         private ITransactionService transactionService;
 
-        public TransactionsController(ITransactionService transactionService)
+        public TransactionsController(IBlockService blockService, ITransactionService transactionService)
         {
+            this.blockService = blockService;
             this.transactionService = transactionService;
         }
 
@@ -22,12 +24,23 @@
         {
             try
             {
-                var foundTransaction = transactionService.GetTransaction(hash);
-                return Json(foundTransaction);
+                var foundPendingTran = transactionService.GetPendingTransaction(hash);
+                if (foundPendingTran != null)
+                {
+                    return Json(foundPendingTran);
+                }
+
+                var foundConfirmedTran = blockService.GetConfrimedTransaction(hash);
+                if (foundConfirmedTran != null)
+                {
+                    return Json(foundConfirmedTran);
+                }
+
+                return NotFound($"Transaction not found");
             }
             catch (Exception ex)
             {
-                return NotFound($"Transaction not found: {ex}");
+                return BadRequest($"Something went wrong: {ex}");
             }
         }
 

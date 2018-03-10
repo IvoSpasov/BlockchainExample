@@ -64,8 +64,21 @@
 
             Block newBlock = this.CreateNewBlock(miningJobRM, foundBlockCandidate);
             this.blocks.Add(newBlock);
-            this.transactionService.ClearAllAddedToBlockPendingTransactions(newBlock.Transactions);
+            this.transactionService.ClearAllAddedToBlockPendingTransactions(newBlock.ConfirmedTransactions);
             this.blockCandidates.Clear();
+        }
+
+        public ConfirmedTransaction GetConfrimedTransaction(string tranHash)
+        {
+            foreach (var block in this.Blocks)
+            {
+                if (block.ConfirmedTransactions.Any(t => t.Hash == tranHash))
+                {
+                    return block.ConfirmedTransactions.First(t => t.Hash == tranHash);
+                }
+            }
+
+            return null;
         }
 
         private BlockCandidate CreateNextBlockCanidate(string minerAddress, int miningDifficulty)
