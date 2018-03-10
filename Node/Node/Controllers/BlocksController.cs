@@ -29,5 +29,19 @@
                 return BadRequest($"Could not get blocks: {ex}");
             }
         }
+
+        [HttpGet("{index}")]
+        public IActionResult GetASingleBlock(int index)
+        {
+            try
+            {
+                var foundBlock = this.blockService.GetBlock(index);
+                return Json(foundBlock);
+            }
+            catch (Exception ex)
+            {
+                return NotFound($"Block with index {index} not found: {ex}");
+            }
+        }
     }
 }

@@ -8,6 +8,8 @@
     {
         List<Block> Blocks { get; }
 
+        Block GetBlock(int index);
+
         BlockCandidate ProcessNextBlockCandiate(string minerAddress);
 
         void ProcessNextBlock(MiningJobRequestModel miningJobRM);

@@ -30,6 +30,11 @@
             }
         }
 
+        public Block GetBlock(int index)
+        {
+            return this.blocks.First(b => b.Index == index);
+        }
+
         public BlockCandidate ProcessNextBlockCandiate(string minerAddress)
         {
             BlockCandidate nextBlockCandidate = this.CreateNextBlockCanidate(minerAddress, miningDifficulty);
