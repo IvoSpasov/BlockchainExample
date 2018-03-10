@@ -81,6 +81,11 @@
             return null;
         }
 
+        public List<ConfirmedTransaction> GetAllConfirmedTransactions()
+        {
+             return this.Blocks.SelectMany(b => b.ConfirmedTransactions).ToList();
+        }
+
         private BlockCandidate CreateNextBlockCanidate(string minerAddress, int miningDifficulty)
         {
             // TODO: add the transaction that pays the miner. Slide 32

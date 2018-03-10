@@ -15,5 +15,7 @@
         void ProcessNextBlock(MiningJobRequestModel miningJobRM);
 
         ConfirmedTransaction GetConfrimedTransaction(string tranHash);
+
+        List<ConfirmedTransaction> GetAllConfirmedTransactions();
     }
 }

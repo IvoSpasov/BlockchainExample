@@ -40,7 +40,7 @@
             }
             catch (Exception ex)
             {
-                return BadRequest($"Something went wrong: {ex}");
+                return BadRequest($"Couldn't get transaction: {ex}");
             }
         }
 
@@ -55,6 +55,20 @@
             catch (Exception ex)
             {
                 return BadRequest($"Couldn't get pending transactions: {ex}");
+            }
+        }
+
+        [HttpGet("confirmed")]
+        public IActionResult GetConfirmedTransactions()
+        {
+            try
+            {
+                var confirmedTransactions = this.blockService.GetAllConfirmedTransactions();
+                return Json(confirmedTransactions);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Couldn't get confirmed transactions: {ex}");
             }
         }
 

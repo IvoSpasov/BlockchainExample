@@ -22,6 +22,7 @@
         {
             try
             {
+                //TODO: validate minerAddress
                 BlockCandidate bc = this.blockService.ProcessNextBlockCandiate(minerAddress);
                 var miningJob = new MiningJobResponseModel()
                 {
