@@ -8,7 +8,7 @@
     {
         List<PendingTransaction> PendingTransactions { get; }
 
-        PendingTransaction GetTransaction(string tranHash);
+        PendingTransaction GetPendingTransaction(string tranHash);
 
         void ProcessNewIncomingTransaction(TransactionRequestModel tranRM);
 

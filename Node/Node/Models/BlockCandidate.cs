@@ -8,7 +8,8 @@
     {
         public int Index { get; set; }
 
-        public List<ConfirmedTransaction> Transactions { get; set; }
+        [JsonProperty("transactions")]
+        public List<ConfirmedTransaction> ConfirmedTransactions { get; set; }
 
         public int Difficulty { get; set; }
 

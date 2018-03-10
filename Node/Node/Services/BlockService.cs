@@ -10,7 +10,7 @@
 
     public class BlockService : IBlockService
     {
-        private const int miningDifficulty = 2;
+        private const int blockMiningDifficulty = 2;
         private Dictionary<string, BlockCandidate> blockCandidates;
         private List<Block> blocks;
         private ITransactionService transactionService;
@@ -37,7 +37,7 @@
 
         public BlockCandidate ProcessNextBlockCandiate(string minerAddress)
         {
-            BlockCandidate nextBlockCandidate = this.CreateNextBlockCanidate(minerAddress, miningDifficulty);
+            BlockCandidate nextBlockCandidate = this.CreateNextBlockCanidate(minerAddress, blockMiningDifficulty);
             this.blockCandidates.Remove(minerAddress);
             this.blockCandidates.Add(minerAddress, nextBlockCandidate);
             return nextBlockCandidate;
@@ -75,7 +75,7 @@
             var newBlockCandidate = new BlockCandidate
             {
                 Index = nextBlockIndex,
-                Transactions = transactionService.CreateConfirmedTransactions(nextBlockIndex),
+                ConfirmedTransactions = transactionService.CreateConfirmedTransactions(nextBlockIndex),
                 Difficulty = miningDifficulty,
                 PreviousBlockHash = this.blocks.Any() ? this.blocks.Last().BlockHash : null,
                 MinedBy = minerAddress
@@ -90,7 +90,7 @@
             Block newBlock = new Block()
             {
                 Index = blockCandidate.Index,
-                Transactions = blockCandidate.Transactions,
+                ConfirmedTransactions = blockCandidate.ConfirmedTransactions,
                 Difficulty = blockCandidate.Difficulty,
                 PreviousBlockHash = blockCandidate.PreviousBlockHash,
                 MinedBy = blockCandidate.MinedBy,
@@ -108,7 +108,7 @@
             this.blockCandidates.Clear();
             for (int i = foundBlockCanidateIndex; i <= this.blocks.Last().Index; i++)
             {
-                this.transactionService.ClearAllAddedToBlockPendingTransactions(this.blocks[i].Transactions);
+                this.transactionService.ClearAllAddedToBlockPendingTransactions(this.blocks[i].ConfirmedTransactions);
             }
         }
 

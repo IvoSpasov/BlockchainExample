@@ -22,13 +22,9 @@
             get { return this.pendingTransactions; }
         }
 
-        public PendingTransaction GetTransaction(string tranHash)
+        public PendingTransaction GetPendingTransaction(string tranHash)
         {
-            var foundPendingTran = pendingTransactions.FirstOrDefault(t => t.Hash == tranHash);
-            if (foundPendingTran == null)
-                throw new Exception("Transaction not found.");
-
-            return foundPendingTran;
+            return pendingTransactions.FirstOrDefault(t => t.Hash == tranHash);
         }
 
         public void ProcessNewIncomingTransaction(TransactionRequestModel tranRM)

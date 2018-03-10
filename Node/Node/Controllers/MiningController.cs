@@ -26,7 +26,7 @@
                 var miningJob = new MiningJobResponseModel()
                 {
                     BlockIndex = bc.Index,
-                    TransactionsIncluded = bc.Transactions.Count,
+                    TransactionsIncluded = bc.ConfirmedTransactions.Count,
                     ExpectedReward = 5000350, //TODO: where is this comming from
                     RewardAddress = minerAddress,
                     BlockDataHash = bc.BlockDataHash,
