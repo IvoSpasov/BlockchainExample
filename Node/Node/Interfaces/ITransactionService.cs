@@ -17,5 +17,7 @@
         List<ConfirmedTransaction> CreateConfirmedTransactions(int nextBlockIndex);
 
         void ClearAllAddedToBlockPendingTransactions(List<ConfirmedTransaction> addedToBlockPT);
+
+        ConfirmedTransaction CreateMinerTransaction(string minerAddress, int nextBlockIndex);
     }
 }

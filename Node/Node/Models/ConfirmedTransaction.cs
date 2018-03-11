@@ -4,6 +4,10 @@
 
     public class ConfirmedTransaction : PendingTransaction
     {
+        public ConfirmedTransaction()
+        {
+        }
+
         public ConfirmedTransaction(PendingTransaction transaction)
         {
             this.From = transaction.From;

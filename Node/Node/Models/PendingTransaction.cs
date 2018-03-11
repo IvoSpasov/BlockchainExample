@@ -53,6 +53,17 @@
 
             return JsonConvert.SerializeObject(this, jsonSettings);
         }
+
+        public string AsJsonIgnoreNulls()
+        {
+            var jsonSettings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            return JsonConvert.SerializeObject(this, jsonSettings);
+        }
+
         public string AsJson()
         {
             return JsonConvert.SerializeObject(this);

@@ -109,7 +109,6 @@
 
         private BlockCandidate CreateNextBlockCanidate(string minerAddress, int miningDifficulty)
         {
-            // TODO: add the transaction that pays the miner. Slide 32
             var nextBlockIndex = this.blocks.Count + 1;
             var newBlockCandidate = new BlockCandidate
             {
@@ -120,6 +119,8 @@
                 MinedBy = minerAddress
             };
 
+            var minerTransaction = this.transactionService.CreateMinerTransaction(minerAddress, nextBlockIndex);
+            newBlockCandidate.ConfirmedTransactions.Add(minerTransaction);
             newBlockCandidate.BlockDataHash = Crypto.CalculateSHA256ToString(newBlockCandidate.AsJson());
             return newBlockCandidate;
         }

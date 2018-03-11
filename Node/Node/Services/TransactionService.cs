@@ -63,6 +63,23 @@
             }
         }
 
+        public ConfirmedTransaction CreateMinerTransaction(string minerAddress, int nextBlockIndex)
+        {
+            var minerTransaction = new ConfirmedTransaction()
+            {
+                From = new string('0', 40),
+                To = minerAddress,
+                Value = 5000350, //TODO: calcualte fees
+                Fee = 0,
+                DateCreated = DateTime.Now, //TODO: fix date format in json object
+                MinedInBlockIndex = nextBlockIndex,
+                TransferSuccessful = true,
+            };
+
+            minerTransaction.Hash = Crypto.CalculateSHA256ToString(minerTransaction.AsJsonIgnoreNulls());
+            return minerTransaction;
+        }
+
         private void Validate(PendingTransaction currentTransaction)
         {
             if (pendingTransactions.Any(t => t.Hash == currentTransaction.Hash))
