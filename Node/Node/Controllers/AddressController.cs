@@ -3,7 +3,9 @@
     using System;
     using System.Linq;
     using Microsoft.AspNetCore.Mvc;
+    using Node.ApiModels;
     using Node.Interfaces;
+    using Node.Services;
 
     [Produces("application/json")]
     [Route("api/Address")]
@@ -42,14 +44,22 @@
             //TODO: validate address
             try
             {
-                var allTransactions = this.addressService.GetAllTransactions(address);
-                if (!allTransactions.Any())
+                bool anyPendingTran = this.addressService.CanGetBalance(address, BalanceType.Pending, out long pendingBalance);
+                if (!anyPendingTran)
                 {
                     return NotFound("No transactions found for this address.");
                 }
 
-                long pendingBalance = this.addressService.GetPendingBalance(address);
-                return Json(new { address, pendingBalance });
+                bool anyLastMinedTran = this.addressService.CanGetBalance(address, BalanceType.LastMined, out long lastMinedBalance);
+                // confirmed by specific block count
+                bool anyConfirmedTran = this.addressService.CanGetBalance(address, BalanceType.Confrimed, out long confirmedBalance);
+                var balanceForAddresRM = new BalanceForAddressResponseModel(
+                    address, 
+                    anyPendingTran, pendingBalance,
+                    anyLastMinedTran, lastMinedBalance,
+                    anyConfirmedTran, confirmedBalance);
+
+                return Json(balanceForAddresRM);
             }
             catch (Exception ex)
             {

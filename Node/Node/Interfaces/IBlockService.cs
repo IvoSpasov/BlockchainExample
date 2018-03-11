@@ -19,5 +19,7 @@
         List<ConfirmedTransaction> GetAllConfirmedTransactions();
 
         IEnumerable<ConfirmedTransaction> GetConfirmedTransactions(string address);
+
+        IEnumerable<ConfirmedTransaction> GetConfrimedTransactions(string address, int blockConfirmationsCount);
     }
 }

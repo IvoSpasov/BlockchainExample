@@ -91,6 +91,22 @@
             return this.Blocks.SelectMany(b => b.ConfirmedTransactions.Where(t => t.From == address || t.To == address));
         }
 
+        public IEnumerable<ConfirmedTransaction> GetConfrimedTransactions(string address, int blockConfirmationsCount)
+        {
+            IEnumerable<ConfirmedTransaction> secureTransactions = new List<ConfirmedTransaction>();
+            if (!this.blocks.Any())
+                return secureTransactions;
+
+            var indexOfLastBlock = this.blocks.Last().Index;
+            if (indexOfLastBlock <= blockConfirmationsCount)
+                return secureTransactions;
+
+            var indexOfSecureBlock = indexOfLastBlock - blockConfirmationsCount;
+            var secureBlocks = this.blocks.Where(b => b.Index < indexOfSecureBlock);
+            secureTransactions = secureBlocks.SelectMany(b => b.ConfirmedTransactions.Where(t => t.From == address || t.To == address));
+            return secureTransactions;
+        }
+
         private BlockCandidate CreateNextBlockCanidate(string minerAddress, int miningDifficulty)
         {
             // TODO: add the transaction that pays the miner. Slide 32

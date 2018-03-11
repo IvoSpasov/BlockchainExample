@@ -7,6 +7,7 @@
 
     public class AddressService : IAddressService
     {
+        private const int blockConfirmationsCount = 6;
         private IBlockService blockService;
         private ITransactionService transactionService;
 
@@ -27,25 +28,51 @@
             return orderedTransactions;
         }
 
-        public long GetPendingBalance(string address)
+        public bool CanGetBalance(string address, BalanceType balanceType, out long calculatedBalance)
         {
-            long calculatedAmount = 0;
+            calculatedBalance = 0;
             // TODO: Filter transactions by "transfer successful"
-            var allTransactions = this.GetAllTransactions(address);
-            foreach (var tran in allTransactions)
+            IEnumerable<PendingTransaction> transactions = null;
+            if (balanceType == BalanceType.Pending)
+            {
+                transactions = this.GetAllTransactions(address);
+                if (!transactions.Any())
+                    return false;
+            }
+            else if(balanceType == BalanceType.LastMined)
+            {
+                transactions = this.blockService.GetConfirmedTransactions(address);
+                if (!transactions.Any())
+                    return false;
+            }
+            else if(balanceType == BalanceType.Confrimed)
+            {
+                transactions = this.blockService.GetConfrimedTransactions(address, blockConfirmationsCount);
+                if (!transactions.Any())
+                    return false;
+            }
+
+            foreach (var tran in transactions)
             {
                 if (tran.To == address)
                 {
-                    calculatedAmount += tran.Value;
+                    calculatedBalance += tran.Value;
                 }
                 else if(tran.From == address)
                 {
-                    calculatedAmount -= tran.Value;
-                    calculatedAmount -= tran.Fee;
+                    calculatedBalance -= tran.Value;
+                    calculatedBalance -= tran.Fee;
                 }
             }
 
-            return calculatedAmount;
+            return true;
         }
+    }
+
+    public enum BalanceType
+    {
+        Confrimed,
+        LastMined,
+        Pending
     }
 }
