@@ -7,6 +7,6 @@
     {
         IEnumerable<PendingTransaction> GetAllTransactions(string address);
 
-        long GetPendingBalance(string address, IEnumerable<PendingTransaction> transactions);
+        long GetPendingBalance(string address);
     }
 }

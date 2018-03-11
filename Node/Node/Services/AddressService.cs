@@ -27,10 +27,11 @@
             return orderedTransactions;
         }
 
-        public long GetPendingBalance(string address, IEnumerable<PendingTransaction> allTransactions)
+        public long GetPendingBalance(string address)
         {
             long calculatedAmount = 0;
             // TODO: Filter transactions by "transfer successful"
+            var allTransactions = this.GetAllTransactions(address);
             foreach (var tran in allTransactions)
             {
                 if (tran.To == address)

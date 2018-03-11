@@ -48,7 +48,7 @@
                     return NotFound("No transactions found for this address.");
                 }
 
-                long pendingBalance = this.addressService.GetPendingBalance(address, allTransactions);
+                long pendingBalance = this.addressService.GetPendingBalance(address);
                 return Json(new { address, pendingBalance });
             }
             catch (Exception ex)
