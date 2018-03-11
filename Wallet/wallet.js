@@ -120,4 +120,21 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#get-balance').click(() => {
+        let wallet = getWalletFromLocalStorage();
+        $.ajax({
+            url: `http://localhost:57778/api/address/${wallet.address}/balance`,
+            method: 'GET',
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (result, status, xhr) {
+                $('#balance').val(JSON.stringify(result, null, '\t'));
+            },
+            error: function (xhr, status, error) {
+                $('#balance').val(xhr.responseJSON);
+                console.log(xhr);
+            }
+        });
+    });
 });

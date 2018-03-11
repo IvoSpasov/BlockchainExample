@@ -102,7 +102,7 @@
                 return secureTransactions;
 
             var indexOfSecureBlock = indexOfLastBlock - blockConfirmationsCount;
-            var secureBlocks = this.blocks.Where(b => b.Index < indexOfSecureBlock);
+            var secureBlocks = this.blocks.Where(b => b.Index <= indexOfSecureBlock);
             secureTransactions = secureBlocks.SelectMany(b => b.ConfirmedTransactions.Where(t => t.From == address || t.To == address));
             return secureTransactions;
         }
