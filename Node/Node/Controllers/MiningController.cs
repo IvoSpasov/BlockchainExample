@@ -28,7 +28,7 @@
                 {
                     BlockIndex = bc.Index,
                     TransactionsIncluded = bc.ConfirmedTransactions.Count,
-                    ExpectedReward = 5000350, //TODO: where is this comming from
+                    ExpectedReward = 5000350, //TODO: calculate fees
                     RewardAddress = minerAddress,
                     BlockDataHash = bc.BlockDataHash,
                     Difficulty = bc.Difficulty

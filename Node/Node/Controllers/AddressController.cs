@@ -13,13 +13,11 @@
     [Route("api/Address")]
     public class AddressController : Controller
     {
-        private IBlockService blockService;
-        private ITransactionService transactionService;
+        private IAddressService addressService;
 
-        public AddressController(IBlockService blockService, ITransactionService transactionService)
+        public AddressController(IAddressService addressService)
         {
-            this.blockService = blockService;
-            this.transactionService = transactionService;
+            this.addressService = addressService;
         }
 
         [HttpGet("{address}/transactions")]
@@ -28,19 +26,13 @@
             //TODO: validate address
             try
             {
-                var pendingTran = this.transactionService.GetPendingTransactions(address);
-                var confirmedTran = this.blockService.GetConfirmedTransactions(address);
-                if (pendingTran == null && confirmedTran == null)
+                var transactions = this.addressService.GetAllTransactions(address);
+                if (!transactions.Any())
                 {
-                    return NotFound("No transactions found for this address");
+                    return NotFound("No transactions found for this address.");
                 }
 
-                //TODO: the code below must be added to a separate service
-                var allTransactions = new List<PendingTransaction>();
-                allTransactions.AddRange(pendingTran);
-                allTransactions.AddRange(confirmedTran);
-                var orderedTransactions =  allTransactions.OrderByDescending(t => t.DateCreated);
-                return Json(orderedTransactions);
+                return Json(transactions);
             }
             catch (Exception ex)
             {

@@ -28,6 +28,7 @@
 
             services.AddSingleton<ITransactionService, TransactionService>();
             services.AddSingleton<IBlockService, BlockService>();
+            services.AddSingleton<IAddressService, AddressService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
