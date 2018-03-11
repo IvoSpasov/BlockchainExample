@@ -6,5 +6,7 @@
     public interface IAddressService
     {
         IEnumerable<PendingTransaction> GetAllTransactions(string address);
+
+        long GetPendingBalance(string address, IEnumerable<PendingTransaction> transactions);
     }
 }

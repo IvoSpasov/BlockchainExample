@@ -26,5 +26,25 @@
             var orderedTransactions = allTransactions.OrderByDescending(t => t.DateCreated);
             return orderedTransactions;
         }
+
+        public long GetPendingBalance(string address, IEnumerable<PendingTransaction> allTransactions)
+        {
+            long calculatedAmount = 0;
+            // TODO: Filter transactions by "transfer successful"
+            foreach (var tran in allTransactions)
+            {
+                if (tran.To == address)
+                {
+                    calculatedAmount += tran.Value;
+                }
+                else if(tran.From == address)
+                {
+                    calculatedAmount -= tran.Value;
+                    calculatedAmount -= tran.Fee;
+                }
+            }
+
+            return calculatedAmount;
+        }
     }
 }
